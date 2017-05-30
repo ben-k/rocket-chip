@@ -47,7 +47,7 @@ class WithTLSimpleUnitTests extends Config((site, here, up) => {
       Module(new uncore.tilelink2.TLRAMAtomicAutomataTest(  txns=10*txns, timeout=timeout)) ) }
 })
 
-class WithTLWidthUnitTests extends Config((site, here, up) => {
+class WithTLFragmenterTests extends Config((site, here, up) => {
   case UnitTests => (q: Parameters) => {
     implicit val p = q
     val txns = 100 * site(TestDurationMultiplier)
@@ -55,7 +55,15 @@ class WithTLWidthUnitTests extends Config((site, here, up) => {
     Seq(
       Module(new uncore.tilelink2.TLRAMFragmenterTest( 4, 256, txns= 5*txns, timeout=timeout)),
       Module(new uncore.tilelink2.TLRAMFragmenterTest(16,  64, txns=15*txns, timeout=timeout)),
-      Module(new uncore.tilelink2.TLRAMFragmenterTest( 4,  16, txns=15*txns, timeout=timeout)),
+      Module(new uncore.tilelink2.TLRAMFragmenterTest( 4,  16, txns=15*txns, timeout=timeout)) ) }
+})
+
+class WithTLWidthWidgetTests extends Config((site, here, up) => {
+  case UnitTests => (q: Parameters) => {
+    implicit val p = q
+    val txns = 100 * site(TestDurationMultiplier)
+    val timeout = 50000 * site(TestDurationMultiplier)
+    Seq(
       Module(new uncore.tilelink2.TLRAMWidthWidgetTest( 1,  1, txns= 1*txns, timeout=timeout)),
       Module(new uncore.tilelink2.TLRAMWidthWidgetTest( 4, 64, txns= 4*txns, timeout=timeout)),
       Module(new uncore.tilelink2.TLRAMWidthWidgetTest(64,  4, txns= 5*txns, timeout=timeout)) ) }
@@ -75,5 +83,6 @@ class WithTLXbarUnitTests extends Config((site, here, up) => {
 
 class UncoreUnitTestConfig extends Config(new WithUncoreUnitTests ++ new WithTestDuration(10) ++ new BasePlatformConfig)
 class TLSimpleUnitTestConfig extends Config(new WithTLSimpleUnitTests ++ new WithTestDuration(10) ++ new BasePlatformConfig)
-class TLWidthUnitTestConfig extends Config(new WithTLWidthUnitTests ++ new WithTestDuration(10) ++ new BasePlatformConfig)
+class TLFragmenterTestConfig extends Config(new WithTLFragmenterTests ++ new WithTestDuration(10) ++ new BasePlatformConfig)
+class TLWidthWidgetTestConfig extends Config(new WithTLWidthWidgetTests ++ new WithTestDuration(10) ++ new BasePlatformConfig)
 class TLXbarUnitTestConfig extends Config(new WithTLXbarUnitTests ++ new WithTestDuration(10) ++ new BasePlatformConfig)
